@@ -1,0 +1,161 @@
+﻿<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Nuevo Cliente</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="txtNombre" class="col-sm-2 control-label">Nombre</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control text-capitalize" id="txtNombre" placeholder="Nombre" maxlength="128" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtApellidos" class="col-sm-2 control-label">Apellidos</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control text-capitalize" id="txtApellidos" placeholder="Apellidos" maxlength="128" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtDNI" class="col-sm-2 control-label">DNI</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" id="txtDNI" placeholder="DNI" maxlength="8" autocomplete="off">
+                    </div>
+                    <label for="txtTelefono" class="col-sm-2 control-label">Teléfono</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" id="txtTelefono" placeholder="Telefono" maxlength="9" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtEmail" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="txtEmail" placeholder="Email" maxlength="64" autocomplete="off">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (Entity != "") {
+            $("#myModalLabel").html("Editar Cliente");
+            ObtenerCliente();
+        }
+    });
+
+    function ObtenerCliente() {
+        let Cliente = globalList.filter(x => x.IDCliente == Entity.IDCliente)[0];
+        $("#txtNombre").val(Cliente.Nombre);
+        $("#txtApellidos").val(Cliente.Apellidos);
+        $("#txtDNI").val(Cliente.DNI);
+        $("#txtTelefono").val(Cliente.Telefono);
+        $("#txtEmail").val(Cliente.Email);
+    }
+
+    $("#btnGuardar").click(function () {
+        if ($("#txtNombre").val().trim() == "") {
+            alert("Debe ingresar un nombre");
+            return false;
+        }
+        if ($("#txtApellidos").val().trim() == "") {
+            alert("Debe ingresar los apellidos");
+            return false;
+        }
+        if ($("#txtDNI").val().trim().length != 8) {
+            alert("Debe ingresar un DNI valido");
+            return false;
+        }
+        if ($("#txtTelefono").val().trim().length != 9) {
+            alert("Debe ingresar un teléfono valido");
+            return false;
+        }
+        if ($("#txtEmail").val().trim() == "") {
+            alert("Debe ingresar un email");
+            return false;
+        }
+        if (Entity != "") {
+            let object = {
+                IDCliente: Entity.IDCliente,
+                Nombre: $("#txtNombre").val().trim(),
+                Apellidos: $("#txtApellidos").val().trim(),
+                DNI: $("#txtDNI").val().trim(),
+                Telefono: $("#txtTelefono").val().trim(),
+                Email: $("#txtEmail").val().trim()
+            }
+            ModificarCliente(object);            
+        } else {
+            let object = {
+                Nombre: $("#txtNombre").val().trim(),
+                Apellidos: $("#txtApellidos").val().trim(),
+                DNI: $("#txtDNI").val().trim(),
+                Telefono: $("#txtTelefono").val().trim(),
+                Email: $("#txtEmail").val().trim()
+            }
+            RegistrarCliente(object);
+        }
+    });
+
+    function ModificarCliente(object) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Home/ModificarCliente",
+            data: JSON.stringify(object),
+            dataType: "json",
+            async: true,
+            cache: false,           
+            success: function (retval) {                
+                if (retval > 0) {
+                    ListarClientes();
+                    CerrarModalCliente();
+                    alert("El cliente se actualizó correctamente");
+                } else {
+                    alert("No fue posible actualizar el cliente");
+                    return false;
+                }
+            },
+            error: function (xhr, textStatus, exceptionThrown) {
+                alert("ocurrrio un error");
+                return false;
+            }
+        });
+    }
+
+    function RegistrarCliente(object) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Home/RegistrarCliente",
+            data: JSON.stringify(object),
+            dataType: "json",
+            async: true,
+            cache: false,
+            success: function (retval) {                
+                if (retval > 0) {
+                    ListarClientes();
+                    CerrarModalCliente();
+                    alert("El cliente se registró correctamente");
+                } else {
+                    alert("No fue posible registrar el cliente");
+                    return false;
+                }
+            },
+            error: function (xhr, textStatus, exceptionThrown) {
+                alert("ocurrrio un error");
+                return false;
+            }
+        });
+    }
+
+    function CerrarModalCliente() {
+        $("#divModalCliente").empty();
+        $("#divModalCliente").modal("hide");
+    }    
+</script>    

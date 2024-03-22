@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Gestión de Clientes";
+}
+<h2>Gestión de Clientes</h2>
+<button type="button" id="btnNuevo" class="btn btn-primary pull-right" title="Nuevo Cliente"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo Cliente</button>
+<br />
+<hr />
+<div class="row">
+    <div id="divResult" class="col-lg-12"></div>
+</div>
+<div id="divModalCliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+@section Scripts {
+    @Scripts.Render("~/Scripts/GestionClientes")
+}

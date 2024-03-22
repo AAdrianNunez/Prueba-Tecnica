@@ -1,0 +1,178 @@
+﻿<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Nuevo Vehiculo</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="txtNombre" class="col-sm-2 control-label">Marca</label>
+                    <div class="col-sm-10">
+                        @Html.DropDownList("ddlMarca", ViewData["ListMarca"] as SelectList, new { id = "ddlMarca", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtApellidos" class="col-sm-2 control-label">Modelo</label>
+                    <div class="col-sm-10">
+                        <select id="ddlModelo" class="form-control">
+                            <option selected>Selecionar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtPlaca" class="col-sm-2 control-label">Placa</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control text-uppercase" id="txtPlaca" placeholder="Placa" maxlength="6" autocomplete="off">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (Entity != "") {
+            $("#myModalLabel").html("Editar Vehiculo");
+            ObtenerVehiculo();
+        }
+    });
+
+    function ObtenerVehiculo() {
+        let Vehiculo = globalList.filter(x => x.IDVehiculo == Entity.IDVehiculo)[0];        
+        $("#ddlMarca").val(Vehiculo.IDMarca).trigger('change');
+        $("#txtPlaca").val(Vehiculo.Placa);
+    }
+
+    $("#ddlMarca").change(function () {
+        let IDMarca = parseInt($("#ddlMarca").val());
+        if (IDMarca == 0) {
+            $("#ddlModelo").empty();
+            $("#ddlModelo").html("<option selected>Selecionar</option>");
+        } else {
+            ListarModelos(IDMarca);            
+        }
+    });
+
+    function ListarModelos(IDMarca) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Home/ListarModelos",
+            data: JSON.stringify({ IDMarca: IDMarca }),
+            dataType: "json",
+            async: true,
+            cache: false,
+            success: function (List) {
+                if (List.length > 0) {
+                    SelectMarca(List);
+                } 
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("ocurrrio un error");
+                return false;
+            }
+        });
+    }
+
+    function SelectMarca(List) {
+        let html = "<option value='0' selected>Selecionar</option>";
+        for (i = 0; i < List.length; i++) {
+            html += "<option value='" + List[i].IDModelo + "'>" + List[i].Descripcion + "</option>"
+        }
+        $("#ddlModelo").empty();
+        $("#ddlModelo").html(html);
+        if (Entity != "") {
+            let Vehiculo = globalList.filter(x => x.IDVehiculo == Entity.IDVehiculo)[0];
+            $("#ddlModelo").val(Vehiculo.IDModelo);
+        }
+    }
+
+    $("#btnGuardar").click(function () {
+        let IDModelo = parseInt($("#ddlModelo").val());
+        if (IDModelo == 0) {
+            alert("Debe ingresar un modelo de vehiculo");
+            return false;
+        }
+        if ($("#txtPlaca").val().trim() == "") {
+            alert("Debe ingresar un numero de placa");
+            return false;
+        }        
+        if (Entity != "") {
+            let object = {
+                IDVehiculo: Entity.IDVehiculo,
+                IDModelo: IDModelo,
+                Placa: $("#txtPlaca").val().trim()
+            }
+            ModificarVehiculo(object);
+        } else {
+            let object = {
+                IDCliente: parseInt(IDCliente),
+                IDModelo: IDModelo,
+                Placa: $("#txtPlaca").val().trim()
+            }
+            RegistrarVehiculo(object);
+        }
+    });
+
+    function ModificarVehiculo(object) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Home/ModificarVehiculo",
+            data: JSON.stringify(object),
+            dataType: "json",
+            async: true,
+            cache: false,
+            success: function (retval) {
+                if (retval > 0) {
+                    ListarVehiculos();
+                    CerrarModalVehiculo();
+                    alert("El Vehiculo se actualizó correctamente");
+                } else {
+                    alert("No fue posible actualizar el Vehiculo");
+                    return false;
+                }
+            },
+            error: function (xhr, textStatus, exceptionThrown) {
+                alert("ocurrrio un error");
+                return false;
+            }
+        });
+    }
+
+    function RegistrarVehiculo(object) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/Home/RegistrarVehiculo",
+            data: JSON.stringify(object),
+            dataType: "json",
+            async: true,
+            cache: false,
+            success: function (retval) {
+                if (retval > 0) {
+                    ListarVehiculos();
+                    CerrarModalVehiculo();
+                    alert("El Vehiculo se registró correctamente");
+                } else {
+                    alert("No fue posible registrar el Vehiculo");
+                    return false;
+                }
+            },
+            error: function (xhr, textStatus, exceptionThrown) {
+                alert("ocurrrio un error");
+                return false;
+            }
+        });
+    }
+
+    function CerrarModalVehiculo() {
+        $("#divModalVehiculo").empty();
+        $("#divModalVehiculo").modal("hide");
+    }
+</script>    

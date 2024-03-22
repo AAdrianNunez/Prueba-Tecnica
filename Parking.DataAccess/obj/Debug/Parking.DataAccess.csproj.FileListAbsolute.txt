@@ -1,0 +1,18 @@
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.DataAccess.dll
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.DataAccess.pdb
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.Entity.dll
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.Entity.pdb
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.csproj.AssemblyReference.cache
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.csproj.CopyComplete
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.dll
+C:\Users\jeacuna\Downloads\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.pdb
+D:\99% de fe\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.DataAccess.dll
+D:\99% de fe\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.DataAccess.pdb
+D:\99% de fe\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.Entity.dll
+D:\99% de fe\Parking\Parking\Parking.DataAccess\bin\Debug\Parking.Entity.pdb
+D:\99% de fe\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.csproj.AssemblyReference.cache
+D:\99% de fe\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.csproj.CoreCompileInputs.cache
+D:\99% de fe\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.csproj.CopyComplete
+D:\99% de fe\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.dll
+D:\99% de fe\Parking\Parking\Parking.DataAccess\obj\Debug\Parking.DataAccess.pdb
